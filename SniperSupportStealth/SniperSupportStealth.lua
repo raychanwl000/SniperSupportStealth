@@ -1,16 +1,16 @@
 -------------------------------------------------
 --  Menu Logic
 -------------------------------------------------
-_G.SilentAssassin = _G.SilentAssassin or {}
-SilentAssassin._path = ModPath
-SilentAssassin._data_path = SavePath .. "silentassassin.txt"
+_G.SniperSupportStealth = _G.SniperSupportStealth or {}
+SniperSupportStealth._path = ModPath
+SniperSupportStealth._data_path = SavePath .. "snipersupportstealth.txt"
 -- num_pagers -> number of pagers allowed.
 -- num_pagers_per_player -> maximum number of pagers a single
 --  player may use
-SilentAssassin.settings = {}
+SniperSupportStealth.settings = {}
 
 --Loads the options from blt
-function SilentAssassin:Load()
+function SniperSupportStealth:Load()
     self.settings["num_pagers"] = 4
     self.settings["num_pagers_per_player"] = 4
     self.settings["enabled"] = true
@@ -26,7 +26,7 @@ function SilentAssassin:Load()
 end
 
 --Saves the options
-function SilentAssassin:Save()
+function SniperSupportStealth:Save()
     local file = io.open(self._data_path, "w+")
     if file then
         file:write(json.encode(self.settings))
@@ -36,9 +36,9 @@ end
 
 --Loads the data table for the menuing system.  Menus are
 --ones based
-function SilentAssassin:getCompleteTable()
+function SniperSupportStealth:getCompleteTable()
     local tbl = {}
-    for i, v in pairs(SilentAssassin.settings) do
+    for i, v in pairs(SniperSupportStealth.settings) do
         if i == "num_pagers" then
             tbl[i] = v + 1
         elseif  i == "num_pagers_per_player" then
@@ -54,87 +54,80 @@ end
 --Sets number of pagers.  Called from the menu system.  Menus are all ones
 --based
 function setNumPagers(this, item)
-    SilentAssassin.settings["num_pagers"] = item:value() - 1
+    SniperSupportStealth.settings["num_pagers"] = item:value() - 1
 end
 
 function setNumPagersPerPlayer(this, item)
-    SilentAssassin.settings["num_pagers_per_player"] = item:value() - 1
+    SniperSupportStealth.settings["num_pagers_per_player"] = item:value() - 1
 end
 
 function setEnabled(this, item)
     local value = item:value() == "on" and true or false
-    SilentAssassin.settings["enabled"] = value
+    SniperSupportStealth.settings["enabled"] = value
 end
 
 function setStealthKillEnabled(this, item)
     local value = item:value() == "on" and true or false
-    SilentAssassin.settings["stealth_kill_enabled"] = value
+    SniperSupportStealth.settings["stealth_kill_enabled"] = value
 end
 
 --Load locatization strings
-Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_SilentAssassin", function(loc)
-    loc:load_localization_file(SilentAssassin._path.."loc/en.txt")
+Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_SniperSupportStealth", function(loc)
+    loc:load_localization_file(SniperSupportStealth._path.."loc/en.txt")
 end)
 
 --Set up the menu
-Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_SilentAssassin", function(menu_manager)
-    MenuCallbackHandler.SilentAssassin_setNumPagers = setNumPagers
-    MenuCallbackHandler.SilentAssassin_setNumPagersPerPlayer = setNumPagersPerPlayer
-    MenuCallbackHandler.SilentAssassin_enabledToggle = setEnabled
-    MenuCallbackHandler.SilentAssassin_killPagerEnabledToggle = setStealthKillEnabled
+Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_SniperSupportStealth", function(menu_manager)
+    MenuCallbackHandler.SniperSupportStealth_setNumPagers = setNumPagers
+    MenuCallbackHandler.SniperSupportStealth_setNumPagersPerPlayer = setNumPagersPerPlayer
+    MenuCallbackHandler.SniperSupportStealth_enabledToggle = setEnabled
+    MenuCallbackHandler.SniperSupportStealth_killPagerEnabledToggle = setStealthKillEnabled
 
-    MenuCallbackHandler.SilentAssassin_Close = function(this)
-        SilentAssassin:Save()
+    MenuCallbackHandler.SniperSupportStealth_Close = function(this)
+        SniperSupportStealth:Save()
     end
 
-    SilentAssassin:Load()
-    MenuHelper:LoadFromJsonFile(SilentAssassin._path.."options.txt", SilentAssassin, SilentAssassin:getCompleteTable())
+    SniperSupportStealth:Load()
+    MenuHelper:LoadFromJsonFile(SniperSupportStealth._path.."options.txt", SniperSupportStealth, SniperSupportStealth:getCompleteTable())
 end)
 
 -- gets the number of pagers, triggering a load if necessary.  Called
 -- by clients
 function getNumPagers()
-    if not SilentAssassin.settings["num_pagers"] then
-        SilentAssassin:Load()
+    if not SniperSupportStealth.settings["num_pagers"] then
+        SniperSupportStealth:Load()
     end
-    return SilentAssassin.settings["num_pagers"]
+    return SniperSupportStealth.settings["num_pagers"]
 end
 
 function getNumPagersPerPlayer()
-    if not SilentAssassin.settings["num_pagers_per_player"] then
-        SilentAssassin:Load()
+    if not SniperSupportStealth.settings["num_pagers_per_player"] then
+        SniperSupportStealth:Load()
     end
-    return SilentAssassin.settings["num_pagers_per_player"]
+    return SniperSupportStealth.settings["num_pagers_per_player"]
 end
 
-function isSAEnabled()
-    if not SilentAssassin.settings["enabled"] then
-        SilentAssassin:Load()
+function isSSPEnabled()
+    if not SniperSupportStealth.settings["enabled"] then
+        SniperSupportStealth:Load()
     end
-    return SilentAssassin.settings["enabled"]
+    return SniperSupportStealth.settings["enabled"]
 end
 
 function isStealthKillEnabled()
-    if not SilentAssassin.settings["stealth_kill_enabled"] then
-        SilentAssassin:Load()
+    if not SniperSupportStealth.settings["stealth_kill_enabled"] then
+        SniperSupportStealth:Load()
     end
-    return SilentAssassin.settings["stealth_kill_enabled"]
+    return SniperSupportStealth.settings["stealth_kill_enabled"]
 end
 
 function isSniperEquipped()
-    -- if not SilentAssassin.settings["sniper_equipped"] then
-    --     SilentAssassin:Load()
-    -- end
-    -- return SilentAssassin.settings["sniper_equipped"]
+    -- check primary is sniper or not
     local is_snp = Utils:IsCurrentPrimaryOfCategory( "snp" )
+    -- check using sniper or not
     local is_holding_primary = Utils:IsCurrentWeaponPrimary()
 
-    -- calc dist
-    -- local aimPos = Utils:GetPlayerAimPos( managers.player:player_unit(), 10000 )
-    -- local distance = managers.player:player_unit():position() - aimPos
-    -- local farEnough = sqrt(distance[0]*distance[0] + distance[1]*distance[1] + distance[2]*distance[2]) > 30
-
-    return is_snp and is_holding_primary
+    return is_snp and is_holding_primary    
 end
 
 function calcDistance()
@@ -149,9 +142,6 @@ end
 -------------------------------------------------
 
 if RequiredScript == "lib/units/enemies/cop/copbrain" then
-    log('cop brain')
-    -- local _weapon_category = managers.player:get_equipped_weapon_category
-    -- log('line 172: ctg: '.. tostring(_weapon_category)
     if not _CopBrain_clbk_damage then
         _CopBrain_clbk_damage = CopBrain._clbk_damage
     end
@@ -173,10 +163,7 @@ if RequiredScript == "lib/units/enemies/cop/copbrain" then
 
     ---------------------------------------------------- only edit this function ------------------------------------------
     function CopBrain:clbk_death(my_unit, damage_info)
-        --log ("clbk_death")
-        -- log ("SA enabled " .. tostring(isSAEnabled()))
-        -- log ("SK enabled " .. tostring(isStealthKillEnabled()))
-        if isSAEnabled() and isStealthKillEnabled() and isSniperEquipped() then
+        if isSSPEnabled() and isStealthKillEnabled() and isSniperEquipped() then
             local head
             if damage_info.col_ray then 
                 --the idea was to require a headshot.  It turns out that col_ray is not
@@ -230,7 +217,7 @@ if RequiredScript == "lib/units/enemies/cop/copbrain" then
     --This is called when a player interacts with a pager.  Swap in the
     --correct table before actually running the pager interaction
     function CopBrain:on_alarm_pager_interaction(status, player)
-        if isSAEnabled() then
+        if isSSPEnabled() then
             if status == "complete" then
                 --This is where the pager really runs
                 local bluffChance = {}
@@ -269,17 +256,17 @@ if RequiredScript == "lib/units/enemies/cop/copbrain" then
     end
 end
 
-Hooks:Add("NetworkManagerOnPeerAdded", "NetworkManagerOnPeerAdded_SA", function(peer, peer_id)
-    if Network:is_server() and isSAEnabled() then
+Hooks:Add("NetworkManagerOnPeerAdded", "NetworkManagerOnPeerAdded_SSP", function(peer, peer_id)
+    if Network:is_server() and isSSPEnabled() then
         local skEnabled = isStealthKillEnabled()
         local numPagers = getNumPagers()
         local numPerPlayer = getNumPagersPerPlayer()
 
-        DelayedCalls:Add("DelayedSAAnnounce" .. tostring(peer_id), 2, function()
+        DelayedCalls:Add("DelayedSSPAnnounce" .. tostring(peer_id), 2, function()
 
-            local message = "Host is running 'SSS'.  "
+            local message = "Host is running 'SniperSupportStealth'.  "
             if skEnabled then
-                message = message .. "Kills on unalerted guards do not trigger pagers.  "
+                message = message .. "Kills on unalerted guards with sniper do not trigger pagers.  "
             end
 
             message = message .. "A maximum of " .. tostring(numPagers) .. " pagers are allowed, and each player may answer up to " .. tostring(numPerPlayer) .. " pagers."

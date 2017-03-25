@@ -1,15 +1,15 @@
 {
-    "menu_id" : "silent_assassin_options",
+    "menu_id" : "sniper_support_stealth_options",
     "parent_menu_id" : "lua_mod_options_menu",
-    "title" : "silent_assassin_title",
-    "back_callback" : "SilentAssassin_Close",
+    "title" : "sniper_support_stealth_title",
+    "back_callback" : "SniperSupportStealth_Close",
     "items" : [
         {
             "type" : "toggle",
-            "id"   : "sa_enabled",
-            "title": "sa_enabled_title",
-            "description" : "sa_enabled_desc",
-            "callback" : "SilentAssassin_enabledToggle",
+            "id"   : "ssp_enabled",
+            "title": "ssp_enabled_title",
+            "description" : "ssp_enabled_desc",
+            "callback" : "SniperSupportStealth_enabledToggle",
             "value" : "enabled",
             "default_value" : true
         },
@@ -19,10 +19,10 @@
         },
         {
             "type" : "toggle",
-            "id"   : "sa_kill_pager_enabled",
-            "title": "sa_kill_pager_enabled_title",
-            "description" : "sa_kill_pager_enabled_desc",
-            "callback" : "SilentAssassin_killPagerEnabledToggle",
+            "id"   : "ssp_kill_pager_enabled",
+            "title": "ssp_kill_pager_enabled_title",
+            "description" : "ssp_kill_pager_enabled_desc",
+            "callback" : "SniperSupportStealth_killPagerEnabledToggle",
             "value" : "stealth_kill_enabled",
             "default_value" : true
         },
@@ -32,32 +32,32 @@
         },
         {
             "type" : "multiple_choice",
-            "id" : "sa_menu_num_pagers",
-            "title" : "sa_num_pagers",
-            "description" : "sa_num_pagers_desc",
-            "callback" : "SilentAssassin_setNumPagers",
+            "id" : "ssp_menu_num_pagers",
+            "title" : "ssp_num_pagers",
+            "description" : "ssp_num_pagers_desc",
+            "callback" : "SniperSupportStealth_setNumPagers",
             "items" : [
-                "sa_pagers_0",
-                "sa_pagers_1",
-                "sa_pagers_2",
-                "sa_pagers_3",
-                "sa_pagers_4"
+                "ssp_pagers_0",
+                "ssp_pagers_1",
+                "ssp_pagers_2",
+                "ssp_pagers_3",
+                "ssp_pagers_4"
             ],
             "default_value" : "2",
             "value" : "num_pagers"
         },
         {
             "type" : "multiple_choice",
-            "id" : "sa_menu_num_pagers_per_player",
-            "title" : "sa_num_pagers_per_player",
-            "description" : "sa_num_pagers_per_player_desc",
-            "callback" : "SilentAssassin_setNumPagersPerPlayer",
+            "id" : "ssp_menu_num_pagers_per_player",
+            "title" : "ssp_num_pagers_per_player",
+            "description" : "ssp_num_pagers_per_player_desc",
+            "callback" : "SniperSupportStealth_setNumPagersPerPlayer",
             "items" : [
-                "sa_pagers_0",
-                "sa_pagers_1",
-                "sa_pagers_2",
-                "sa_pagers_3",
-                "sa_pagers_4"
+                "ssp_pagers_0",
+                "ssp_pagers_1",
+                "ssp_pagers_2",
+                "ssp_pagers_3",
+                "ssp_pagers_4"
             ],
             "default_value" : "2",
             "value" : "num_pagers_per_player"
