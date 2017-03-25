@@ -1,0 +1,17 @@
+{
+	"name" : "Sniper support stealth",
+	"description" : "Allow sniper to support stealth. Allows silently assassinating all guards",
+	"author" : "",
+	"contact" : "",
+	"version" : "1.0",
+	"priority" : 1000,
+	"hooks" : [
+		{ "hook_id" : "lib/managers/blackmarketmanager", "script_path" : "SniperSupportStealth.lua" },
+		{ "hook_id" : "lib/units/enemies/cop/copbrain",
+		  "script_path" : "SniperSupportStealth.lua" },
+		{ "hook_id" : "lib/tweak_data/playertweakdata",
+		  "script_path" : "SniperSupportStealth.lua" },
+		{ "hook_id" : "lib/managers/menumanager",
+		  "script_path" : "SniperSupportStealth.lua" }
+	]
+}
