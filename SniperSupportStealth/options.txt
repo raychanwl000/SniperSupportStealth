@@ -61,6 +61,27 @@
             ],
             "default_value" : "2",
             "value" : "num_pagers_per_player"
-        }
+        },
+        {
+            "type" : "toggle",
+            "id" : "ssp_dr_check_enabled",
+            "title" : "ssp_dr_check_enabled_title",
+            "description" : "ssp_dr_check_enabled_desc",
+            "callback" : "SniperSupportStealth_drCheckEnabledToggle",
+            "value" : "dr_check_enabled",
+            "default_value" : false,
+        },
+        {
+            "type" : "slider",
+            "id" : "ssp_dr_threshold",
+            "title" : "ssp_dr_threshold_title",
+            "description" : "ssp_dr_threshold_desc",
+            "callback" : "SniperSupportStealth_drCheckThreshold",
+            "value" : "slider_value",
+            "default_value" : 50,
+            "max" : 75,
+            "min" : 3,
+            "step" : 1,
+        }        
     ]
 }

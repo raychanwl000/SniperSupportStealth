@@ -13,5 +13,9 @@
     "ssp_enabled_title" : "Enable Sniper Support Stealth",
     "ssp_enabled_desc" : "Enable Sniper Support Stealth mod",
     "ssp_kill_pager_enabled_title" : "No Pager on Stealth Kill",
-    "ssp_kill_pager_enabled_desc" : "If set, no pager will sound when an unalerted guard is killed in stealth"
+    "ssp_kill_pager_enabled_desc" : "If set, no pager will sound when an unalerted guard is killed in stealth",
+    "ssp_dr_check_enabled_title" : "Enable detection risk check",
+    "ssp_dr_check_enabled_desc" : "If set, detection risk will be checked for player. Player's DR must exceeds threshold to trigger silent kill.",
+    "ssp_dr_threshold_title" : "Detection risk threshold",
+    "ssp_dr_threshold_desc" : "For example if set to 60, then player's DR must be > 60 to trigger silent kill"
 }

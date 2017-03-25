@@ -15,7 +15,9 @@ function SniperSupportStealth:Load()
     self.settings["num_pagers_per_player"] = 4
     self.settings["enabled"] = true
     self.settings["stealth_kill_enabled"] = true
-    self.settings["sniper_equipped"] = false
+    self.settings["dr_check_enabled"] = false
+    self.settings["dr_check_threshold"] = 3
+
 
     local file = io.open(self._data_path, "r")
     if (file) then
@@ -53,12 +55,17 @@ end
 
 --Sets number of pagers.  Called from the menu system.  Menus are all ones
 --based
+
+
+-- these 2 functions are different from SA, always allow player to answer 4 pagers
 function setNumPagers(this, item)
-    SniperSupportStealth.settings["num_pagers"] = item:value() - 1
+    -- SniperSupportStealth.settings["num_pagers"] = item:value() - 1
+    SniperSupportStealth.settings["num_pagers"] = 4
 end
 
 function setNumPagersPerPlayer(this, item)
-    SniperSupportStealth.settings["num_pagers_per_player"] = item:value() - 1
+    -- SniperSupportStealth.settings["num_pagers_per_player"] = item:value() - 1
+    SniperSupportStealth.settings["num_pagers_per_player"] = 4
 end
 
 function setEnabled(this, item)
@@ -69,6 +76,16 @@ end
 function setStealthKillEnabled(this, item)
     local value = item:value() == "on" and true or false
     SniperSupportStealth.settings["stealth_kill_enabled"] = value
+end
+
+function setDRcheckEnabled(this, item)
+    local value = item:value() == "on" and true or false
+    SniperSupportStealth.settings["dr_check_enabled"] = value
+end
+
+function setDRcheckThreshold(this, item)
+    local value = item:value()
+    SniperSupportStealth.settings["dr_check_threshold"] = value
 end
 
 --Load locatization strings
@@ -82,6 +99,8 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_SniperSupportStealth",
     MenuCallbackHandler.SniperSupportStealth_setNumPagersPerPlayer = setNumPagersPerPlayer
     MenuCallbackHandler.SniperSupportStealth_enabledToggle = setEnabled
     MenuCallbackHandler.SniperSupportStealth_killPagerEnabledToggle = setStealthKillEnabled
+    MenuCallbackHandler.SniperSupportStealth_drCheckEnabledToggle = setDRcheckEnabled
+    MenuCallbackHandler.SniperSupportStealth_drCheckThreshold = setDRcheckThreshold
 
     MenuCallbackHandler.SniperSupportStealth_Close = function(this)
         SniperSupportStealth:Save()
@@ -121,6 +140,20 @@ function isStealthKillEnabled()
     return SniperSupportStealth.settings["stealth_kill_enabled"]
 end
 
+function isDRCheckEnabled()
+    if not SniperSupportStealth.settings["dr_check_enabled"] then
+        SniperSupportStealth:Load()
+    end
+    return SniperSupportStealth.settings["dr_check_enabled"]
+end
+
+function getDRCheckThreshold()
+    if not SniperSupportStealth.settings["dr_check_threshold"] then
+        SniperSupportStealth:Load()
+    end
+    return SniperSupportStealth.settings["dr_check_threshold"]
+end
+
 
 -------------------------------------------------
 --  function for checking silent kill
@@ -133,10 +166,12 @@ function isEligible()
     local is_holding_primary = Utils:IsCurrentWeaponPrimary()
     if not is_holding_primary then return false end
     -- check detection risk
-    detection_risk_threshold = 60
-    detection_risk = managers.blackmarket:get_suspicion_offset_of_local(tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)
-    detection_risk = math.round(detection_risk * 100)
-    if not (detection_risk > detection_risk_threshold) then return false end
+    if isDRCheckEnabled() then
+        detection_risk_threshold = getDRCheckThreshold()
+        detection_risk = managers.blackmarket:get_suspicion_offset_of_local(tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)
+        detection_risk = math.round(detection_risk * 100)
+        if not (detection_risk >= detection_risk_threshold) then return false end
+    end
 
     return true
 end
