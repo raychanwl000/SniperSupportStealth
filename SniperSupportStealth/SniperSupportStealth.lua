@@ -121,13 +121,24 @@ function isStealthKillEnabled()
     return SniperSupportStealth.settings["stealth_kill_enabled"]
 end
 
-function isSniperEquipped()
+
+-------------------------------------------------
+--  function for checking silent kill
+-------------------------------------------------
+function isEligible()
     -- check primary is sniper or not
     local is_snp = Utils:IsCurrentPrimaryOfCategory( "snp" )
+    if not is_snp then return false end
     -- check using sniper or not
     local is_holding_primary = Utils:IsCurrentWeaponPrimary()
+    if not is_holding_primary then return false end
+    -- check detection risk
+    detection_risk_threshold = 60
+    detection_risk = managers.blackmarket:get_suspicion_offset_of_local(tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)
+    detection_risk = math.round(detection_risk * 100)
+    if not (detection_risk > detection_risk_threshold) then return false end
 
-    return is_snp and is_holding_primary    
+    return true
 end
 
 function calcDistance()
@@ -163,7 +174,7 @@ if RequiredScript == "lib/units/enemies/cop/copbrain" then
 
     ---------------------------------------------------- only edit this function ------------------------------------------
     function CopBrain:clbk_death(my_unit, damage_info)
-        if isSSPEnabled() and isStealthKillEnabled() and isSniperEquipped() then
+        if isSSPEnabled() and isStealthKillEnabled() and isEligible() then
             local head
             if damage_info.col_ray then 
                 --the idea was to require a headshot.  It turns out that col_ray is not
